@@ -1,0 +1,13 @@
+# Build output — published via npm (see "files" in package.json)
+dist/
+*.tsbuildinfo
+
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.*
+
+# OS
+.DS_Store
