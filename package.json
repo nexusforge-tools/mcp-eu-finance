@@ -1,0 +1,69 @@
+{
+  "name": "@nexusforgetools/eu-finance",
+  "version": "1.0.0",
+  "description": "MCP server for European financial data — ECB rates, Eurostat inflation, GDP, unemployment. Real-time structured data for AI agents.",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "finance",
+    "european",
+    "ecb",
+    "eurostat",
+    "ai-agent",
+    "claude",
+    "cursor",
+    "windsurf",
+    "cline",
+    "trading",
+    "economics",
+    "inflation",
+    "gdp",
+    "unemployment",
+    "exchange-rates"
+  ],
+  "homepage": "https://nexusforge.tools",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nexusforge-tools/mcp-eu-finance"
+  },
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "mcp-eu-finance": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@nexusforge/mcp-core": "*",
+    "@modelcontextprotocol/sdk": "^1.10.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0"
+  }
+}
