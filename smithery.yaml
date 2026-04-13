@@ -1,0 +1,25 @@
+name: eu-finance
+description: "European financial data for AI agents — ECB rates, Eurostat inflation, GDP, unemployment. No API key required."
+version: "1.0.0"
+license: MIT
+homepage: https://nexusforge.tools
+repository: https://github.com/nexusforge-tools/mcp-eu-finance
+
+startCommand:
+  type: stdio
+  command: npx
+  args: ["-y", "@nexusforgetools/eu-finance"]
+
+categories:
+  - finance
+  - data
+  - europe
+
+tags:
+  - ecb
+  - eurostat
+  - inflation
+  - gdp
+  - unemployment
+  - forex
+  - macroeconomics
