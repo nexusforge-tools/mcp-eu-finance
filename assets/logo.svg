@@ -1,4 +1,3 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="NexusForge logo">
-  <path d="M16 2L29.856 9.5V24.5L16 32L2.144 24.5V9.5L16 2Z" fill="#f59e0b"/>
-  <path d="M16 9L22.928 12.75V20.25L16 24L9.072 20.25V12.75L16 9Z" fill="#09090b" opacity="0.55"/>
+  <path fill-rule="evenodd" fill="#f59e0b" d="M16 2L29.856 9.5V24.5L16 32L2.144 24.5V9.5L16 2Z M16 9L22.928 12.75V20.25L16 24L9.072 20.25V12.75L16 9Z"/>
 </svg>
