@@ -1,24 +1,28 @@
-# @nexusforgetools/eu-finance
+<div align="center">
+  <img src="assets/logo.svg" alt="NexusForge" width="80" />
 
-> European financial data for AI agents — ECB rates, inflation, GDP, unemployment. One MCP server, zero API keys needed.
+  # NexusForge EU Finance
 
-[![npm version](https://img.shields.io/npm/v/@nexusforgetools/eu-finance)](https://www.npmjs.com/package/@nexusforgetools/eu-finance)
-[![npm downloads](https://img.shields.io/npm/dm/@nexusforgetools/eu-finance)](https://www.npmjs.com/package/@nexusforgetools/eu-finance)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Glama](https://glama.ai/mcp/servers/nexusforge-tools/mcp-eu-finance/badges/score.svg)](https://glama.ai/mcp/servers/nexusforge-tools/mcp-eu-finance)
+  **European financial data for AI agents**<br/>
+  ECB rates · Eurostat inflation · GDP · Unemployment · Zero API key needed
+
+  [![npm version](https://img.shields.io/npm/v/@nexusforgetools/eu-finance?style=flat-square)](https://www.npmjs.com/package/@nexusforgetools/eu-finance)
+  [![npm downloads](https://img.shields.io/npm/dm/@nexusforgetools/eu-finance?style=flat-square)](https://www.npmjs.com/package/@nexusforgetools/eu-finance)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
+  [![Glama](https://glama.ai/mcp/servers/nexusforge-tools/mcp-eu-finance/badges/score.svg)](https://glama.ai/mcp/servers/nexusforge-tools/mcp-eu-finance)
+
+</div>
 
 ---
 
-## Quick Start (30 seconds)
+## Quick Start
 
-### Claude Code
-
+**Claude Code** — one command:
 ```bash
 claude mcp add eu-finance -- npx -y @nexusforgetools/eu-finance
 ```
 
-### Claude Desktop (`claude_desktop_config.json`)
-
+**Claude Desktop / Cursor / Windsurf** — add to your MCP config:
 ```json
 {
   "mcpServers": {
@@ -30,21 +34,17 @@ claude mcp add eu-finance -- npx -y @nexusforgetools/eu-finance
 }
 ```
 
-### Cursor / Windsurf
-
-Same config — add it under `mcpServers` in your MCP settings file.
-
 ---
 
-## What You Can Do
+## What You Can Ask
 
-*"What's the current ECB deposit facility rate and how does it compare to last year?"*
+> *"What's the current ECB deposit facility rate and how does it compare to last year?"*
 
-*"Compare inflation across Germany, France, Spain, and Italy — who's closest to the 2% target?"*
+> *"Compare inflation across Germany, France, Spain, and Italy — who's closest to the 2% target?"*
 
-*"Show me Q4 GDP growth for the Eurozone vs the EU-27 average."*
+> *"Show me Q4 GDP growth for the Eurozone vs the EU-27 average."*
 
-*"What's the EUR/USD rate today? What was it on 2024-01-15?"*
+> *"What's the EUR/USD rate today? What was it on 2024-01-15?"*
 
 ---
 
@@ -53,7 +53,7 @@ Same config — add it under `mcpServers` in your MCP settings file.
 | Tool | Description | Source |
 |------|-------------|--------|
 | `get_ecb_rates` | ECB key interest rates: deposit facility, main refinancing, marginal lending | ECB SDW |
-| `get_euro_exchange` | EUR exchange rates vs any currency — latest or historical by date | ECB via Frankfurter.app |
+| `get_euro_exchange` | EUR exchange rates vs any currency — latest or historical by date | ECB / Frankfurter |
 | `get_eu_inflation` | HICP inflation rates for all EU countries — annual % change | Eurostat |
 | `get_eu_gdp` | Quarterly GDP data — growth rate or absolute value, all EU countries | Eurostat |
 | `get_eu_unemployment` | Monthly unemployment rates — seasonally adjusted, by age group | Eurostat |
@@ -63,28 +63,27 @@ Same config — add it under `mcpServers` in your MCP settings file.
 
 ## Free vs Pro
 
-| Feature | Free | Pro |
-|---------|------|-----|
+| | Free | Pro |
+|--|------|-----|
 | API calls / day | 100 | Unlimited |
-| Data freshness | Cached (1h ECB / 24h Eurostat) | Same (upstream limits) |
-| Historical depth | Latest only | Up to 20 periods |
+| Historical depth | Latest | Up to 20 periods |
 | Servers included | eu-finance | All NexusForge servers |
 | Support | Community | Priority email |
 
-**Get Pro: [https://nexusforge.tools/pricing](https://nexusforge.tools/pricing)**
+→ **[Get Pro at nexusforge.tools/pricing](https://nexusforge.tools/pricing)**
 
 ---
 
 ## More NexusForge Servers
 
-- **@nexusforgetools/web-enrichment** — Scraping & data enrichment *(coming soon)*
-- **@nexusforgetools/business-intel** — Market intelligence *(coming soon)*
+| Package | Description | Status |
+|---------|-------------|--------|
+| `@nexusforgetools/web-enrichment` | Scraping & structured data enrichment | Coming soon |
+| `@nexusforgetools/business-intel` | Market sizing, competitors, trends | Coming soon |
 
 ---
 
-## Links
-
-- **Website**: [nexusforge.tools](https://nexusforge.tools)
-- **Docs**: [nexusforge.tools/docs](https://nexusforge.tools/docs)
-- **Discord**: [nexusforge.tools/discord](https://nexusforge.tools/discord)
-- **Issues**: [github.com/nexusforge-tools/mcp-eu-finance/issues](https://github.com/nexusforge-tools/mcp-eu-finance/issues)
+<div align="center">
+  <a href="https://nexusforge.tools">nexusforge.tools</a> ·
+  <a href="https://github.com/nexusforge-tools/mcp-eu-finance/issues">Issues</a>
+</div>
