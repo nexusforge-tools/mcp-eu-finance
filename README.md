@@ -3,7 +3,9 @@
 > European financial data for AI agents — ECB rates, inflation, GDP, unemployment. One MCP server, zero API keys needed.
 
 [![npm version](https://img.shields.io/npm/v/@nexusforgetools/eu-finance)](https://www.npmjs.com/package/@nexusforgetools/eu-finance)
+[![npm downloads](https://img.shields.io/npm/dm/@nexusforgetools/eu-finance)](https://www.npmjs.com/package/@nexusforgetools/eu-finance)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Glama](https://glama.ai/mcp/servers/nexusforge-tools/mcp-eu-finance/badges/score.svg)](https://glama.ai/mcp/servers/nexusforge-tools/mcp-eu-finance)
 
 ---
 
