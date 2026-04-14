@@ -1,4 +1,10 @@
 {
   "$schema": "https://glama.ai/mcp/schemas/server.json",
-  "maintainers": ["nexusforge-tools", "MBRoi"]
+  "maintainers": ["nexusforge-tools", "MBRoi"],
+  "servers": [
+    {
+      "url": "https://api.nexusforge.tools/mcp/eu-finance/sse",
+      "transport": "sse"
+    }
+  ]
 }
