@@ -48,6 +48,14 @@ claude mcp add eu-finance -- npx -y @nexusforgetools/eu-finance
 
 ---
 
+## In Action
+
+![ECB rates in Claude](https://raw.githubusercontent.com/nexusforge-tools/mcp-eu-finance/main/docs/screenshot-ecb-rates.png)
+
+![EU inflation comparison](https://raw.githubusercontent.com/nexusforge-tools/mcp-eu-finance/main/docs/screenshot-inflation.png)
+
+---
+
 ## Tools
 
 | Tool | Description | Source |
@@ -63,14 +71,9 @@ claude mcp add eu-finance -- npx -y @nexusforgetools/eu-finance
 
 ## Free vs Pro
 
-| | Free | Pro |
-|--|------|-----|
-| API calls / day | 100 | Unlimited |
-| Historical depth | Latest | Up to 20 periods |
-| Servers included | eu-finance | All NexusForge servers |
-| Support | Community | Priority email |
+eu-finance is free during beta. Pro is coming in Month 2 with higher rate limits and all NexusForge servers bundled.
 
-→ **Pro coming soon — [nexusforge.tools](https://nexusforge.tools)**
+→ **[nexusforge.tools](https://nexusforge.tools)**
 
 ---
 
