@@ -70,7 +70,7 @@ claude mcp add eu-finance -- npx -y @nexusforgetools/eu-finance
 | Servers included | eu-finance | All NexusForge servers |
 | Support | Community | Priority email |
 
-→ **[Get Pro at nexusforge.tools/pricing](https://nexusforge.tools/pricing)**
+→ **Pro coming soon — [nexusforge.tools](https://nexusforge.tools)**
 
 ---
 
