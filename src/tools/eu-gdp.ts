@@ -35,7 +35,7 @@ interface EurostatJsonData {
 export function registerEuGdpTool(server: McpServer): void {
   server.tool(
     'get_eu_gdp',
-    'Get quarterly GDP data for EU countries. Returns GDP growth rate or absolute values. Source: Eurostat National Accounts.',
+    'Get quarterly GDP data for EU countries from Eurostat National Accounts. Returns year-on-year growth rate (%) by default, or absolute values in million EUR. Use this tool to analyze economic growth trends, identify recessions, or compare performance across EU members. Default covers the Eurozone (EA20), EU-27, DE, FR, IT, ES for the last 4 quarters. Data is cached 24 hours. Use unit "CLV_PCH_SM" for year-on-year growth (%), "CLV_PCH_PRE" for quarter-on-quarter growth, "CP_MEUR" for absolute GDP in million EUR. Returns null for periods with no published data.',
     {
       countries: z
         .array(z.string().min(2).max(12).toUpperCase())
@@ -71,11 +71,13 @@ export function registerEuGdpTool(server: McpServer): void {
         const searchParams = new URLSearchParams({
           na_item: 'B1GQ',       // GDP at market prices
           unit: unit ?? 'CLV_PCH_SM',
-          geo: targetCountries.join(','),
-          lastTimePeriod: String(quarters),
+          lastTimePeriod: String(quarters ?? 4),
           format: 'JSON',
           lang: 'EN',
         });
+        for (const country of targetCountries) {
+          searchParams.append('geo', country);
+        }
 
         const url = `${EUROSTAT_BASE}/namq_10_gdp?${searchParams}`;
         const res = await fetch(url, { signal: AbortSignal.timeout(15_000) });

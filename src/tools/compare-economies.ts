@@ -29,11 +29,13 @@ async function fetchLatestEurostatValue(
 ): Promise<Record<string, { value: number; period: string }>> {
   const searchParams = new URLSearchParams({
     ...params,
-    geo: countries.join(','),
     lastTimePeriod: '1',
     format: 'JSON',
     lang: 'EN',
   });
+  for (const country of countries) {
+    searchParams.append('geo', country);
+  }
 
   const res = await fetch(`${EUROSTAT_BASE}/${dataset}?${searchParams}`, {
     signal: AbortSignal.timeout(15_000),
@@ -80,7 +82,7 @@ async function fetchLatestEurostatValue(
 export function registerCompareEconomiesTool(server: McpServer): void {
   server.tool(
     'compare_eu_economies',
-    'Compare key economic indicators (inflation, GDP growth, unemployment) across multiple EU countries side by side. Returns a unified snapshot per country.',
+    'Compare inflation, GDP growth, and unemployment across multiple EU countries in a single call. Use this tool instead of calling individual tools when you need a multi-country economic overview, for competitive analysis, or to build economic dashboards. Returns the most recent available value and period for each indicator per country. Indicators default to all three (inflation, gdp_growth, unemployment); omit any to narrow the fetch. Returns null for an indicator if recent data is temporarily unavailable. Requires 2-10 country codes. Data is cached 24 hours.',
     {
       countries: z
         .array(z.string().min(2).max(12).toUpperCase())

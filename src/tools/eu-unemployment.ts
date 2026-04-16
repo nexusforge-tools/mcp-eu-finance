@@ -37,7 +37,7 @@ interface EurostatJsonData {
 export function registerEuUnemploymentTool(server: McpServer): void {
   server.tool(
     'get_eu_unemployment',
-    'Get monthly unemployment rates for EU countries. Seasonally adjusted, as % of active population. Source: Eurostat.',
+    'Get monthly unemployment rates for EU countries from Eurostat, seasonally adjusted, as a percentage of the active population. Use this tool to monitor labor market conditions, compare employment across EU members, or track youth unemployment trends. Default returns the latest 3 months for the Eurozone (EA20) and major EU countries. Use age="Y15-24" for youth unemployment (15-24 year olds) or age="Y25-74" for adult unemployment. Data is cached 24 hours and updated monthly by Eurostat. Returns an array of data points with country code, period (YYYY-MM), and unemployment rate.',
     {
       countries: z
         .array(z.string().min(2).max(12).toUpperCase())
@@ -76,11 +76,13 @@ export function registerEuUnemploymentTool(server: McpServer): void {
           age: age ?? 'TOTAL',
           unit: 'PC_ACT', // Percentage of active population
           s_adj: 'SA',    // Seasonally adjusted
-          geo: targetCountries.join(','),
-          lastTimePeriod: String(months),
+          lastTimePeriod: String(months ?? 3),
           format: 'JSON',
           lang: 'EN',
         });
+        for (const country of targetCountries) {
+          searchParams.append('geo', country);
+        }
 
         const url = `${EUROSTAT_BASE}/une_rt_m?${searchParams}`;
         const res = await fetch(url, { signal: AbortSignal.timeout(15_000) });
