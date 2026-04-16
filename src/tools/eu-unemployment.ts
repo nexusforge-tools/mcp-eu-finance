@@ -1,6 +1,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import { cacheGet, cacheSet, hashParams, withMcpMiddleware, makeMcpError } from '@nexusforge/mcp-core';
+import { cacheGet, cacheSet, hashParams } from '../lib/cache.js';
+import { withMcpMiddleware, makeMcpError } from '../lib/middleware.js';
 
 const SERVER_NAME = 'nexusforge-eu-finance';
 const CACHE_TTL = 86400; // 24 hours
