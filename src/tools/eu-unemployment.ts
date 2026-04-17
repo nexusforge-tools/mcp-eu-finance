@@ -1,7 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import { cacheGet, cacheSet, hashParams } from '../lib/cache.js';
-import { withMcpMiddleware, makeMcpError } from '../lib/middleware.js';
+import { cacheGet, cacheSet, hashParams, withMcpMiddleware, makeMcpError } from '../lib/index.js';
 
 const SERVER_NAME = 'nexusforge-eu-finance';
 const CACHE_TTL = 86400; // 24 hours
@@ -37,7 +36,7 @@ interface EurostatJsonData {
 export function registerEuUnemploymentTool(server: McpServer): void {
   server.tool(
     'get_eu_unemployment',
-    'Get monthly unemployment rates for EU countries from Eurostat, seasonally adjusted, as a percentage of the active population. Use this tool to monitor labor market conditions, compare employment across EU members, or track youth unemployment trends. Default returns the latest 3 months for the Eurozone (EA20) and major EU countries. Use age="Y15-24" for youth unemployment (15-24 year olds) or age="Y25-74" for adult unemployment. Data is cached 24 hours and updated monthly by Eurostat. Returns an array of data points with country code, period (YYYY-MM), and unemployment rate.',
+    'Fetches monthly unemployment rates for EU countries from Eurostat (dataset: une_rt_m), seasonally adjusted, as a percentage of the active population. Returns a JSON object with: `data` (array of objects containing `country` as full name, `period` in YYYY-MM format, `rate` as a numeric percentage, `age_group`, and `sex`), `unit` ("Percentage of active population (%)"), `source`, and `retrieved_at` as ISO 8601. Defaults to TOTAL age group for EA20, EU27_2020, DE, FR, IT, ES, PL, NL over the last 3 months. Data is cached 24 hours. USAGE: Use age=Y15-24 for youth unemployment, which is typically 2-3x the overall rate. Data is seasonally adjusted (SA) — do not apply additional seasonal correction. Typical Eurostat lag is 30-60 days after the reference month. Set months=12 or more for trend and cyclical analysis. Non-EU countries (e.g. US, UK) are not available — use this tool only for EU member states and EA20/EU27_2020 aggregates.',
     {
       countries: z
         .array(z.string().min(2).max(12).toUpperCase())

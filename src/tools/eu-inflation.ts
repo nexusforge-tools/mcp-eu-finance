@@ -1,7 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import { cacheGet, cacheSet, hashParams } from '../lib/cache.js';
-import { withMcpMiddleware, makeMcpError } from '../lib/middleware.js';
+import { cacheGet, cacheSet, hashParams, withMcpMiddleware, makeMcpError } from '../lib/index.js';
 
 const SERVER_NAME = 'nexusforge-eu-finance';
 const CACHE_TTL = 86400; // 24 hours — monthly stats
@@ -84,7 +83,7 @@ function parseEurostatResponse(json: EurostatJsonData, countries: string[]): Inf
 export function registerEuInflationTool(server: McpServer): void {
   server.tool(
     'get_eu_inflation',
-    'Get HICP (Harmonised Index of Consumer Prices) inflation rates for EU countries. Returns the latest annual rate of change (%) per country. Source: Eurostat.',
+    'Fetches HICP (Harmonised Index of Consumer Prices) annual inflation rates for EU countries from Eurostat (dataset: prc_hicp_manr). Returns a JSON object with: `data` (array of objects containing `country` as full name, `period` in YYYY-MM format, and `rate` as a numeric annual percentage change), `unit` ("Annual rate of change (%)"), `source`, and `retrieved_at` as ISO 8601. Defaults to the latest single month for all 29 EU members and aggregates. Data is cached 24 hours. USAGE: HICP is the EU-harmonised inflation standard used by the ECB for monetary policy — use it (not national CPI) for cross-country comparisons. Use country code EA for the Eurozone aggregate or EU27_2020 for the full EU-27 aggregate. Typical data lag is 30-45 days after the reference month. Set periods=12 to retrieve a 12-month trend. Pair with get_ecb_rates to contextualize how the ECB policy rate relates to current inflation.',
     {
       countries: z
         .array(z.string().min(2).max(12).toUpperCase())
@@ -113,11 +112,13 @@ export function registerEuInflationTool(server: McpServer): void {
         const searchParams = new URLSearchParams({
           coicop: 'CP00', // Total (all items)
           unit: 'RCH_A',  // Annual rate of change
-          geo: targetCountries.join(','),
-          lastTimePeriod: String(periods),
+          lastTimePeriod: String(periods ?? 1),
           format: 'JSON',
           lang: 'EN',
         });
+        for (const country of targetCountries) {
+          searchParams.append('geo', country);
+        }
 
         const url = `${EUROSTAT_BASE}/prc_hicp_manr?${searchParams}`;
         const res = await fetch(url, { signal: AbortSignal.timeout(15_000) });

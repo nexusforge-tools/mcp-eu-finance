@@ -7,6 +7,23 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [1.0.5] — 2026-04-17
+
+### Fixed
+
+- Removed @nexusforge/mcp-core workspace dependency — package now fully standalone
+- npx mode works without Redis or Supabase
+
+---
+
+## [1.0.5] — 2026-04-17
+
+### Fixed
+
+- SSE remote URL corrected to `/mcp/eu-finance/sse` in MCP registry — proper namespaced route for multi-server architecture
+
+---
+
 ## [1.0.4] — 2026-04-17
 
 ### Fixed

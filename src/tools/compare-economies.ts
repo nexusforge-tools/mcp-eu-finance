@@ -1,7 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import { cacheGet, cacheSet, hashParams } from '../lib/cache.js';
-import { withMcpMiddleware, makeMcpError } from '../lib/middleware.js';
+import { cacheGet, cacheSet, hashParams, withMcpMiddleware, makeMcpError } from '../lib/index.js';
 
 const SERVER_NAME = 'nexusforge-eu-finance';
 const CACHE_TTL = 86400; // 24 hours
@@ -82,7 +81,7 @@ async function fetchLatestEurostatValue(
 export function registerCompareEconomiesTool(server: McpServer): void {
   server.tool(
     'compare_eu_economies',
-    'Compare inflation, GDP growth, and unemployment across multiple EU countries in a single call. Use this tool instead of calling individual tools when you need a multi-country economic overview, for competitive analysis, or to build economic dashboards. Returns the most recent available value and period for each indicator per country. Indicators default to all three (inflation, gdp_growth, unemployment); omit any to narrow the fetch. Returns null for an indicator if recent data is temporarily unavailable. Requires 2-10 country codes. Data is cached 24 hours.',
+    'Fetches the latest inflation, GDP growth, and unemployment for 2-10 EU countries in a single parallel call to Eurostat. Returns a JSON object with: `countries` (array of per-country snapshots, each containing `country` as full name, `country_code`, `inflation` as `{rate, period}` or null, `gdp_growth` as `{rate, period}` or null, `unemployment` as `{rate, period}` or null), `source`, and `retrieved_at` as ISO 8601. Each indicator returns the single most recent available value. Inflation period is YYYY-MM; GDP period is YYYY-Qq; unemployment period is YYYY-MM. Data is cached 24 hours. USAGE: Prefer this tool over calling get_eu_inflation, get_eu_gdp, and get_eu_unemployment separately when building dashboards or running multi-indicator comparisons — it reduces latency by parallelizing the three Eurostat requests. Each indicator\'s period may differ due to different Eurostat release schedules (inflation lags ~30 days, GDP ~90 days). An indicator field is null when Eurostat has not published recent data — always handle null gracefully. Use the `indicators` parameter to skip unneeded metrics and reduce API calls.',
     {
       countries: z
         .array(z.string().min(2).max(12).toUpperCase())

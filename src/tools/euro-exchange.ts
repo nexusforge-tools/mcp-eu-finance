@@ -1,13 +1,13 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import { cacheGet, cacheSet, hashParams } from '../lib/cache.js';
-import { withMcpMiddleware, makeMcpError } from '../lib/middleware.js';
+import { cacheGet, cacheSet, hashParams, withMcpMiddleware, makeMcpError } from '../lib/index.js';
 
 const SERVER_NAME = 'nexusforge-eu-finance';
 const CACHE_TTL = 3600; // 1 hour
 
 // Frankfurter API — free, ECB-sourced exchange rates
-const FRANKFURTER_BASE = 'https://api.frankfurter.app';
+// api.frankfurter.app redirects to api.frankfurter.dev/v1 since 2025
+const FRANKFURTER_BASE = 'https://api.frankfurter.dev/v1';
 
 interface ExchangeRateResult {
   base: string;
@@ -20,7 +20,7 @@ interface ExchangeRateResult {
 export function registerEuroExchangeTool(server: McpServer): void {
   server.tool(
     'get_euro_exchange',
-    'Get EUR exchange rates against other currencies. Supports latest rates or historical rates by date. Source: ECB via Frankfurter.app.',
+    'Fetches EUR exchange rates against other currencies from the ECB via Frankfurter API. Returns a JSON object with: `base` ("EUR"), `date` (YYYY-MM-DD of the rate), `rates` (object mapping 3-letter currency codes to numeric values representing how many units of that currency equal 1 EUR), `source`, and `retrieved_at` as ISO 8601. Latest rates are cached 1 hour; historical rates are cached permanently. USAGE: Supports 33 currencies including USD, GBP, JPY, CHF, CNY, SEK, PLN, and others. Omit `date` for the latest available rates. Provide `date` in YYYY-MM-DD format for historical rates (available from 1999-01-04). These are ECB reference rates published at ~16:00 CET — not real-time mid-market rates; expect small spreads vs live quotes. Requests for weekends or ECB holidays return the previous business day\'s rates. Returns an error for dates before 1999-01-04 or future dates.',
     {
       currencies: z
         .array(z.string().length(3).toUpperCase())

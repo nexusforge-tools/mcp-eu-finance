@@ -17,7 +17,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
-import { logger } from './lib/logger.js';
+import { logger } from './lib/index.js';
 
 import { registerEcbRatesTool } from './tools/ecb-rates.js';
 import { registerEuroExchangeTool } from './tools/euro-exchange.js';

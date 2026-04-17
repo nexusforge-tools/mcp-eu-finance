@@ -1,7 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import { cacheGet, cacheSet, hashParams } from '../lib/cache.js';
-import { withMcpMiddleware, makeMcpError } from '../lib/middleware.js';
+import { cacheGet, cacheSet, hashParams, withMcpMiddleware, makeMcpError } from '../lib/index.js';
 
 const SERVER_NAME = 'nexusforge-eu-finance';
 const CACHE_TTL = 86400; // 24 hours
@@ -35,7 +34,7 @@ interface EurostatJsonData {
 export function registerEuGdpTool(server: McpServer): void {
   server.tool(
     'get_eu_gdp',
-    'Get quarterly GDP data for EU countries from Eurostat National Accounts. Returns year-on-year growth rate (%) by default, or absolute values in million EUR. Use this tool to analyze economic growth trends, identify recessions, or compare performance across EU members. Default covers the Eurozone (EA20), EU-27, DE, FR, IT, ES for the last 4 quarters. Data is cached 24 hours. Use unit "CLV_PCH_SM" for year-on-year growth (%), "CLV_PCH_PRE" for quarter-on-quarter growth, "CP_MEUR" for absolute GDP in million EUR. Returns null for periods with no published data.',
+    'Fetches quarterly GDP data for EU/Eurozone countries from Eurostat (dataset: namq_10_gdp). Returns a JSON object with: `data` (array of objects, each containing `country` as a full name string, `period` in YYYY-Qq format e.g. "2024-Q3", `value` as a number, and `unit` as a string label), `source`, and `retrieved_at` as ISO 8601. Defaults to year-on-year growth rate (%) for EA20, EU27_2020, DE, FR, IT, ES over the last 4 quarters. Data is cached 24 hours. Missing periods are omitted from the array (not returned as null). USAGE: Use unit=CLV_PCH_SM (default) for cross-country growth comparisons. Use unit=CP_MEUR to compare absolute GDP size. Use unit=CLV_PCH_PRE for quarter-on-quarter momentum. Use unit=CLV10_MEUR for real GDP volume excluding price effects. Typical Eurostat data lag is 60-90 days after quarter end — the most recent quarter may be absent. Request quarters=8 or more for recession analysis or multi-year trend charts.',
     {
       countries: z
         .array(z.string().min(2).max(12).toUpperCase())
