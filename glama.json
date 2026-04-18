@@ -3,6 +3,10 @@
   "maintainers": ["nexusforge-tools", "MBRoi"],
   "servers": [
     {
+      "url": "https://api.nexusforge.tools/mcp/eu-finance",
+      "transport": "http"
+    },
+    {
       "url": "https://api.nexusforge.tools/mcp/eu-finance/sse",
       "transport": "sse"
     }
