@@ -1,6 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import { cacheGet, cacheSet, hashParams, withMcpMiddleware, makeMcpError } from '../lib/index.js';
+import { cacheGet, cacheSet, hashParams, withMcpMiddleware, makeMcpError, READ_ONLY_PUBLIC_API } from '../lib/index.js';
 
 const SERVER_NAME = 'nexusforge-eu-finance';
 const CACHE_TTL = 86400; // 24 hours
@@ -56,6 +56,7 @@ export function registerEuGdpTool(server: McpServer): void {
         .default(4)
         .describe('Number of recent quarters to return (1-20). Default: 4 (1 year).'),
     },
+    READ_ONLY_PUBLIC_API,
     async ({ countries, unit, quarters }) => {
       return withMcpMiddleware({ serverName: SERVER_NAME, toolName: 'get_eu_gdp' }, async () => {
         const targetCountries = countries?.length ? countries : ['EA20', 'EU27_2020', 'DE', 'FR', 'IT', 'ES'];

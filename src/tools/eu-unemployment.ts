@@ -1,6 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import { cacheGet, cacheSet, hashParams, withMcpMiddleware, makeMcpError } from '../lib/index.js';
+import { cacheGet, cacheSet, hashParams, withMcpMiddleware, makeMcpError, READ_ONLY_PUBLIC_API } from '../lib/index.js';
 
 const SERVER_NAME = 'nexusforge-eu-finance';
 const CACHE_TTL = 86400; // 24 hours
@@ -56,6 +56,7 @@ export function registerEuUnemploymentTool(server: McpServer): void {
         .default('TOTAL')
         .describe('Age group: TOTAL (all ages), Y15-24 (youth), Y25-74 (adults). Default: TOTAL.'),
     },
+    READ_ONLY_PUBLIC_API,
     async ({ countries, months, age }) => {
       return withMcpMiddleware({ serverName: SERVER_NAME, toolName: 'get_eu_unemployment' }, async () => {
         const targetCountries = countries?.length
