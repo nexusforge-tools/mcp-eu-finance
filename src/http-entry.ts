@@ -5,6 +5,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { VERSION, NAME } from './version.js';
 import { checkOrigin } from './middleware/origin-check.js';
 import { rateLimit } from './middleware/rate-limit.js';
+import { handleAuth } from './middleware/auth-key.js';
 import { logger } from './lib/index.js';
 
 import { registerEcbRatesTool } from './tools/ecb-rates.js';
@@ -77,7 +78,13 @@ const httpServer = createServer(async (req: IncomingMessage, res: ServerResponse
   if (!checkOrigin(req, res)) return;
 
   if (req.method === 'POST' && url.pathname === '/') {
-    if (!rateLimit(req, res)) return;
+    const authResult = await handleAuth(req, res);
+    if (authResult === false) return; // clé invalide → 401
+    if (authResult === null) {
+      // anon → rate-limit
+      if (!rateLimit(req, res)) return;
+    }
+    // authResult === true → clé valide, headers déjà posés
     const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
     const server = createMcpServer();
     await server.connect(transport);
