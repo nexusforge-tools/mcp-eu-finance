@@ -4,6 +4,7 @@ import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { VERSION, NAME } from './version.js';
 import { checkOrigin } from './middleware/origin-check.js';
+import { rateLimit } from './middleware/rate-limit.js';
 import { logger } from './lib/index.js';
 
 import { registerEcbRatesTool } from './tools/ecb-rates.js';
@@ -76,10 +77,7 @@ const httpServer = createServer(async (req: IncomingMessage, res: ServerResponse
   if (!checkOrigin(req, res)) return;
 
   if (req.method === 'POST' && url.pathname === '/') {
-    const limit = parseInt(process.env.MCP_RATE_LIMIT ?? '100', 10);
-    res.setHeader('X-RateLimit-Limit', limit);
-    res.setHeader('X-RateLimit-Remaining', limit);
-    res.setHeader('X-RateLimit-Reset', Math.floor(Date.now() / 1000) + 3600);
+    if (!rateLimit(req, res)) return;
     const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
     const server = createMcpServer();
     await server.connect(transport);
