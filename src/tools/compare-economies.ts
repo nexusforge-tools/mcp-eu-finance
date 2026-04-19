@@ -1,6 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import { cacheGet, cacheSet, hashParams, withMcpMiddleware, makeMcpError } from '../lib/index.js';
+import { cacheGet, cacheSet, hashParams, withMcpMiddleware, makeMcpError, READ_ONLY_PUBLIC_API } from '../lib/index.js';
 
 const SERVER_NAME = 'nexusforge-eu-finance';
 const CACHE_TTL = 86400; // 24 hours
@@ -94,6 +94,7 @@ export function registerCompareEconomiesTool(server: McpServer): void {
         .default(['inflation', 'gdp_growth', 'unemployment'])
         .describe('Which indicators to include. Default: all three.'),
     },
+    READ_ONLY_PUBLIC_API,
     async ({ countries, indicators }) => {
       return withMcpMiddleware({ serverName: SERVER_NAME, toolName: 'compare_eu_economies' }, async () => {
         const params = { countries, indicators };

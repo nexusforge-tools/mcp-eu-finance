@@ -1,6 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import { cacheGet, cacheSet, hashParams, withMcpMiddleware, makeMcpError } from '../lib/index.js';
+import { cacheGet, cacheSet, hashParams, withMcpMiddleware, makeMcpError, READ_ONLY_PUBLIC_API } from '../lib/index.js';
 
 const SERVER_NAME = 'nexusforge-eu-finance';
 const CACHE_TTL = 86400; // 24 hours — monthly stats
@@ -98,6 +98,7 @@ export function registerEuInflationTool(server: McpServer): void {
         .default(1)
         .describe('Number of recent months to return per country (1-24). Default: 1 (latest only).'),
     },
+    READ_ONLY_PUBLIC_API,
     async ({ countries, periods }) => {
       return withMcpMiddleware({ serverName: SERVER_NAME, toolName: 'get_eu_inflation' }, async () => {
         const targetCountries = countries?.length ? countries : [...EU_COUNTRIES];

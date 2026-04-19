@@ -1,6 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import { cacheGet, cacheSet, hashParams, withMcpMiddleware, makeMcpError } from '../lib/index.js';
+import { cacheGet, cacheSet, hashParams, withMcpMiddleware, makeMcpError, READ_ONLY_PUBLIC_API } from '../lib/index.js';
 
 const SERVER_NAME = 'nexusforge-eu-finance';
 const CACHE_TTL = 3600; // 1 hour
@@ -32,6 +32,7 @@ export function registerEuroExchangeTool(server: McpServer): void {
         .optional()
         .describe('Historical date in YYYY-MM-DD format. Omit for latest rates.'),
     },
+    READ_ONLY_PUBLIC_API,
     async ({ currencies, date }) => {
       return withMcpMiddleware({ serverName: SERVER_NAME, toolName: 'get_euro_exchange' }, async () => {
         const params = { currencies, date };
