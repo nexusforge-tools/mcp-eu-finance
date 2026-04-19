@@ -1,7 +1,7 @@
 {
   "name": "@nexusforgetools/eu-finance",
   "mcpName": "io.github.nexusforge-tools/mcp-eu-finance",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "MCP server for European financial data — ECB rates, Eurostat inflation, GDP, unemployment. Real-time structured data for AI agents.",
   "keywords": [
     "mcp",
