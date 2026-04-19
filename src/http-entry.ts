@@ -76,6 +76,10 @@ const httpServer = createServer(async (req: IncomingMessage, res: ServerResponse
   if (!checkOrigin(req, res)) return;
 
   if (req.method === 'POST' && url.pathname === '/') {
+    const limit = parseInt(process.env.MCP_RATE_LIMIT ?? '100', 10);
+    res.setHeader('X-RateLimit-Limit', limit);
+    res.setHeader('X-RateLimit-Remaining', limit);
+    res.setHeader('X-RateLimit-Reset', Math.floor(Date.now() / 1000) + 3600);
     const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
     const server = createMcpServer();
     await server.connect(transport);
