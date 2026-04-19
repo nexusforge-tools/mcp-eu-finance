@@ -29,6 +29,23 @@ function createMcpServer(): McpServer {
   return server;
 }
 
+const MCP_WELL_KNOWN = {
+  name: NAME,
+  version: VERSION,
+  transports: [
+    { type: 'streamable-http', url: 'https://api.nexusforge.tools/mcp/eu-finance' },
+    { type: 'sse', url: 'https://api.nexusforge.tools/mcp/eu-finance/sse' }
+  ],
+  tools: [
+    'get_ecb_rates',
+    'get_euro_exchange',
+    'get_eu_inflation',
+    'get_eu_gdp',
+    'get_eu_unemployment',
+    'compare_eu_economies'
+  ]
+};
+
 const httpServer = createServer(async (req: IncomingMessage, res: ServerResponse) => {
   const url = new URL(req.url ?? '/', `http://localhost:${PORT}`);
 
@@ -47,6 +64,12 @@ const httpServer = createServer(async (req: IncomingMessage, res: ServerResponse
   if (req.method === 'GET' && url.pathname === '/healthz') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ status: 'ok', name: NAME, version: VERSION, transport: 'streamable-http-stateless', uptime_seconds: Math.floor(process.uptime()) }));
+    return;
+  }
+
+  if (req.method === 'GET' && url.pathname === '/.well-known/mcp.json') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(MCP_WELL_KNOWN));
     return;
   }
 
